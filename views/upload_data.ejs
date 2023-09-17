@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="/stylesheets/app.css" type="text/css" />
+    <title>Fraud Detection</title>
+</head>
+<body class="d-flex flex-column vh-100">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-info">
+        <div class="container-fluid title">
+            <a class="navbar-brand" href="/">Détection de fraude</a>
+        </div>
+    </nav>
+    <main class="container my-5">
+        <div id="process-started"></div>
+        <div class="container container-fluid choose-file card">
+            <form action="/predict_from_upload" class="dropzone" id="upload-form">
+                <button type="submit" class="btn btn-primary liveAlertBtn disabled button d-none" id="upload-button">Start Process</button>
+                <div class="dropzone-previews" id="custom-dropzone"></div>
+            </form>
+        </div>
+        <div class="container-fluid results d-none">
+            <div class="download-button">
+                <form action="/upload_fon" method="get">
+                    <div class="d-grid gap-2 m-2 py-2">
+                        <button class="btn btn-info button" type="submit">Visualiser les predictions</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="footer bg-info py-3 mt-auto">
+        <div class="container">
+            <span class="text-muted">&copy; Développé avec &#9825; par MMB, FBB, SDS</span>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/scripts/js/dropzone.min.js"></script>
+    <script src="/scripts/js/dropzone_upload.js"></script>
+</body>
+</html>

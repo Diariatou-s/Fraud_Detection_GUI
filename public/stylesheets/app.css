@@ -1,0 +1,113 @@
+.container{
+    max-width: 1400px;
+}
+
+.table>thead {
+    vertical-align: middle;
+}
+
+.navbar-brand{
+    font-weight: 700;
+    font-size: 2rem !important;
+    font-family: "Urbanist",sans-serif;
+}
+
+.title{
+    justify-content: center !important;
+}
+
+.invalid {
+    color: red !important;
+    font-weight: 500;
+}
+
+.form-control:focus {
+    border-color: #5ee1fc !important;
+}
+
+.choose-file{
+    border: 3px solid rgb(13,202,240);
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.bg-primary,.btn-primary{
+    background-color: #3dbded!important;
+    border: none;
+}
+
+.dropzone {
+    border: none!important;
+}
+
+.dropzone.dz-clickable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button{
+    background: linear-gradient(to right, #89d7f6, #4c9ae3) border-box;
+}
+
+#upload-button {
+    border: 2px solid transparent !important;
+}
+
+#upload-button:hover {
+    cursor: pointer!important;
+}
+
+#upload-button:hover {
+    transition: transform 0.5s;
+    transform: scale(1.05);
+}
+
+#upload-button:focus {
+    box-shadow: 0 0 0 0.2rem #2955d991
+}   
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.screens {
+    border: 2px solid #2955d9;
+}
+
+.content {
+    margin: 20px;
+}
+  
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  outline: 1px solid #494a4f;
+  border-radius: 1px;
+  border: none;
+}
+
+.hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+}

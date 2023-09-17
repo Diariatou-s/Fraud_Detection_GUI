@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/app.css" type="text/css" />
+    <title>Fraud Detection</title>
+</head>
+<body class="d-flex flex-column vh-100">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-info">
+        <div class="container-fluid title">
+            <a class="navbar-brand" href="/">Détection de fraude</a>
+        </div>
+    </nav>
+    <main class="container my-2">
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm table-striped m-0 align-middle text-center">
+                <thead class="table-info">
+                    <tr>
+                        <th scope="col">Jour</th>
+                        <th scope="col">Heure</th>
+                        <th scope="col">Type De Transaction</th>
+                        <th scope="col">Montant De La Transaction</th>
+                        <th scope="col">Solde de l'émetteur avant</th>
+                        <th scope="col">Solde de l'émetteur après</th>
+                        <th scope="col">Solde du destinataire avant</th>
+                        <th scope="col">Solde du destinataire après</th>
+                        <th scope="col">Probabilité de non fraude XGBoost</th>
+                        <th scope="col">Probabilité de fraude XGBoost</th>
+                        <th scope="col">Prédiction XGBoost</th>
+                        <th scope="col">Probabilité de non fraude RandomForestClassifier</th>
+                        <th scope="col">Probabilité de fraude RandomForestClassifier</th>
+                        <th scope="col">Prédiction RandomForestClassifier</th>
+                        <th scope="col">Probabilité de non fraude LightGBM</th>
+                        <th scope="col">Probabilité de fraude LightGBM</th>
+                        <th scope="col">Prédiction LightGBM</th>
+                        <th scope="col">Prédiction Hard Voting</th>
+                        <th scope="col">Prédiction Soft Voting</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach(function(line) {%>
+                        <tr>
+                            <td>
+                                <%= line.day %>
+                            </td>
+                            <td>
+                                <%= line.hour %>
+                            </td>
+                            <td>
+                                <% if(line.type == 'TRANSFER') {%>
+                                    Transfert
+                                <% } else { %>
+                                    Retrait
+                                <% } %>
+                            </td>
+                            <td>
+                                <%= line.amount %>
+                            </td>
+                            <td>
+                                <%= line.oldbalanceOrg %>
+                            </td>
+                            <td>
+                                <%= line.newbalanceOrig %>
+                            </td>
+                            <td>
+                                <%= line.oldbalanceDest %>
+                            </td>
+                            <td>
+                                <%= line.newbalanceDest %>
+                            </td>
+                            <td>
+                                <%= line.xgb_proba_nfraud %>
+                            </td>
+                            <td>
+                                <%= line.xgb_proba_fraud %>
+                            </td>
+                            <td>
+                                <% if(line.xgb_pred == 0) {%>
+                                    <strong>NON FRAUDE</strong>
+                                <% } else { %>
+                                    <strong>FRAUDE</strong>
+                                <% } %>
+                            </td>
+                            <td>
+                                <%= line.rf_proba_nfraud %>
+                            </td>
+                            <td>
+                                <%= line.rf_proba_fraud %>
+                            </td>
+                            <td>
+                                <% if(line.rf_pred == 0) {%>
+                                    <strong>NON FRAUDE</strong>
+                                <% } else { %>
+                                    <strong>FRAUDE</strong>
+                                <% } %>
+                            </td>
+                            <td>
+                                <%= line.lgbm_proba_nfraud %>
+                            </td>
+                            <td>
+                                <%= line.lgbm_proba_fraud %>
+                            </td>
+                            <td>
+                                <% if(line.lgbm_pred == 0) {%>
+                                    <strong>NON FRAUDE</strong>
+                                <% } else { %>
+                                    <strong>FRAUDE</strong>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if(line.hard_pred == 0) {%>
+                                    <strong>NON FRAUDE</strong>
+                                <% } else { %>
+                                    <strong>FRAUDE</strong>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if(line.soft_pred == 0) {%>
+                                    <strong>NON FRAUDE</strong>
+                                <% } else { %>
+                                    <strong>FRAUDE</strong>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <nav>
+            <ul class="pagination pagination-lg justify-content-center">
+              <li class="page-item <% if (currentPage == 1) { %>disabled <% } %>">
+                <a class="page-link" href="/upload_fon?page=<%= parseInt(currentPage) - 1 %>">Previous</a>
+              </li>
+              <li class="page-item <% if (currentPage == totalPages) { %>disabled <% } %>">
+                <a class="page-link" href="/upload_fon?page=<%= parseInt(currentPage) + 1 %>">Next</a>
+              </li>
+            </ul>
+        </nav>
+    </main>
+    <footer class="footer bg-info py-3 mt-auto">
+        <div class="container">
+            <span class="text-muted">&copy; Développé avec &#9825; par MMB, FBB, SDS</span>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
