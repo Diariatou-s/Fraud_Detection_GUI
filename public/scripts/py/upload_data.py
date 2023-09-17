@@ -10,12 +10,12 @@ import os
 warnings.filterwarnings("ignore")
 
 # Chargement des modèles et du scaler
-modele_xgb = joblib.load(os.path.abspath("public/models/modele_xgb.pkl"))
-modele_rf = joblib.load(os.path.abspath("public/models/modele_rf.pkl"))
-modele_lgbm = joblib.load(os.path.abspath("public/models/modele_lgbm.pkl"))
-modele_hard = joblib.load(os.path.abspath("public/models/modele_hard.pkl"))
-modele_soft = joblib.load(os.path.abspath("public/models/modele_soft.pkl"))
-scaler = joblib.load(os.path.abspath("public/models/scaler.pkl"))
+modele_xgb = joblib.load(os.path.abspath("models/modele_xgb.pkl"))
+modele_rf = joblib.load(os.path.abspath("models/modele_rf.pkl"))
+modele_lgbm = joblib.load(os.path.abspath("models/modele_lgbm.pkl"))
+modele_hard = joblib.load(os.path.abspath("models/modele_hard.pkl"))
+modele_soft = joblib.load(os.path.abspath("models/modele_soft.pkl"))
+scaler = joblib.load(os.path.abspath("models/scaler.pkl"))
 
 # Récupérer le fichier donné comme argument
 file = sys.argv[1]
