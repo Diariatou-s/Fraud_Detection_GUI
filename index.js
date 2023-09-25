@@ -1,4 +1,6 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const User = require('./models/user');
 const methodOverride = require('method-override');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -6,6 +8,13 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 const app = express();
+mongoose.connect('mongodb://localhost:27017/fraud_detection');
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", () => {
+    console.log("Database connected");
+});
 
 let predictions = ""
 
@@ -31,6 +40,13 @@ app.get('/input', (req, res) => {
 // Route GET pour afficher la page de chargement d'un fichier CSV
 app.get('/upload', (req, res) => {
     res.render('upload_data')
+});
+
+// Route GET pour afficher la page de chargement d'un fichier CSV
+app.get('/simulation', async (req, res) => {
+    const users = await User.find({});
+    console.log(users);
+    res.render('simulation', { users })
 });
 
 // Route POST qui renvoie la prédiction d'un enregistrement en lançant le script input_data.py
@@ -86,6 +102,13 @@ app.post('/predict_from_input', (req, res) => {
             res.status(code).send("Internal Server Error");
         }
       });
+})
+
+// Route POST qui renvoie la prédiction d'un enregistrement en lançant le script input_data.py
+app.post('/predict_from_simulation', (req, res) => {
+    predictions = ""
+    inputs = req.body
+    console.log(inputs)
 })
 
 // Route POST qui renvoie les prédictions à partir d'un fichier CSV chargé en lançant le script umpload_data.py

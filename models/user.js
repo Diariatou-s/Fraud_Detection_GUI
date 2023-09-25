@@ -10,6 +10,10 @@ const UserSchema = new Schema({
     solde: {
         type: String,
         require: true
+    },
+    role: {
+        type: String,
+        require: true
     }
 });
 

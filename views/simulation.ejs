@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/stylesheets/app.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Fraud Detection</title>
+    <link rel="stylesheet" href="/stylesheets/app.css" type="text/css" />
 </head>
 <body class="d-flex flex-column vh-100">
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-info">
@@ -13,14 +14,110 @@
             <a class="navbar-brand" href="/">Détection de fraude</a>
         </div>
     </nav>
-    <main class="container my-2 py-2">
-        
+    <main class="container my-auto py-5">
+        <form action="/predict_from_simulation" method="POST" class="container py-3" >
+            <div class="row">
+                <div class="form-floating mb-3 col-md-4 px-1">
+                    <input type="text" class="form-control form-control-sm" id="day" name="day" placeholder="15" required>
+                    <label for="day">Jour de la transaction (01-31)</label>
+                    <div id="day-invalid" class="form-text invalid d-none">Veuillez saisir un jour valide entre 01 et 31</div>
+                </div>
+                <div class="form-floating mb-3 col-md-4 px-1">
+                    <input type="text" class="form-control" id="hour" name="hour" placeholder="00" required>
+                    <label for="hour">Heure de la transaction (00-23)</label>
+                    <div id="hour-invalid" class="form-text invalid d-none">Veuillez saisir une heure valide entre 00 et 23</div>
+                </div>
+                <div class="form-floating mb-3 col-md-4 px-1">
+                    <input type="text" class="form-control" id="amount" name="amount" placeholder="5000" required>
+                    <label for="amount">Montant</label>
+                    <div id="amount-invalid" class="form-text invalid d-none">Veuillez saisir un montant valide</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col px-1 form-floating">
+                    <select class="form-select" id="type" name="type" onchange="display_type()" required>
+                        <option value="">Sélectionnez une option</option>
+                        <option value="CASH_OUT">Retrait</option>
+                        <option value="TRANSFER">Transfert</option>
+                    </select>
+                    <label for="type">Type de transaction</label>
+                </div>
+            </div>
+            <div class="retrait d-none">
+                <div class="row">
+                    <div class="mb-3 col px-1 form-floating">
+                        <select class="form-select form-select-sm" id="orig_retrait" aria-label=".form-select-sm">
+                            <option value="">Sélectionnez une option</option>
+                            <% for (let user of users) {%>
+                            <% if (user.role == 'client') { %>
+                                <option value="<%=user._id%>">
+                                    <%= user.id %>
+                                </option>
+                            <% } %>
+                        <% } %>
+                        </select>
+                    <label for="orig" class="form-label">Identifiant de l'agent</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col px-1 form-floating">
+                        <select class="form-select form-select-sm" id="dest_retrait" aria-label=".form-select-sm">
+                            <option value="">Sélectionnez une option</option>
+                            <% for (let user of users) {%>
+                            <% if (user.role == 'agent') { %>
+                                <option value="<%=user._id%>">
+                                    <%= user.id %>
+                                </option>
+                            <% } %>
+                        <% } %>
+                        </select>
+                    <label for="dest" class="form-label">Identifiant du client</label>
+                    </div>
+                </div>
+            </div>
+            <div class="transfert d-none">
+                <div class="row">
+                    <div class="mb-3 col px-1 form-floating">
+                        <select class="form-select form-select-sm" id="orig_transfert" aria-label=".form-select-sm">
+                            <option value="">Sélectionnez une option</option>
+                            <% for (let user of users) {%>
+                            <% if (user.role == 'client') { %>
+                                <option value="<%=user._id%>">
+                                    <%= user.id %>
+                                </option>
+                            <% } %>
+                        <% } %>
+                        </select>
+                    <label for="orig" class="form-label">Identifiant de l'émetteur</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col px-1 form-floating">
+                        <select class="form-select form-select-sm" id="dest_transfert" aria-label=".form-select-sm">
+                            <option value="">Sélectionnez une option</option>
+                            <% for (let user of users) {%>
+                            <% if (user.role == 'client') { %>
+                                <option value="<%=user._id%>">
+                                    <%= user.id %>
+                                </option>
+                            <% } %>
+                        <% } %>
+                        </select>
+                    <label for="dest" class="form-label">Identifiant du destinataire</label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-info btn-lg">Prédire</button>
+            </div>
+          </form>
     </main>
-    <footer class="footer bg-info py-3">
+    <footer class="footer bg-info py-3 mt-auto">
         <div class="container">
             <span class="text-muted">&copy; Développé avec &#9825; par MMB, FBB, SDS</span>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/scripts/js/input_simu.js"></script>
 </body>
 </html>
