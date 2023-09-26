@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const {
-  ids,
-  soldes,
-  roles
+  customers,
+  soldes_customers,
+  agents,
+  soldes_agents
 } = require("./infos.js");
 const User = require("../models/user");
 
@@ -15,17 +16,26 @@ db.once("open", () => {
   console.log("Database connected");
 });
 
-const sample = (array) => array[Math.floor(Math.random() * array.length)];
-
 const seedDB = async () => {
     await User.deleteMany({});
-    for (let i = 0; i < ids.length; i++) {
+    for (let i = 0; i < customers.length; i++) {
         const user = new User({ 
-            id: ids[i],
-            solde: soldes[i],
-            role: sample(roles)
+            id: customers[i],
+            solde: soldes_customers[i],
+            role: 'client'
         });
-      await user.save();
+        const agent = new User({ 
+          id: agents[i],
+          solde: soldes_agents[i],
+          role: 'agent'
+        });
+      try {
+        await user.save();
+        await agent.save();
+      } catch (e) {
+        console.log(e)
+      }
+      
     }
   };
 

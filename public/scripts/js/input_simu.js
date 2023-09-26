@@ -1,3 +1,4 @@
+const button = document.querySelector('button')
 const amountInput = document.getElementById('amount');
 const alert1 = document.getElementById('amount-invalid')
 const type = document.getElementById('type')
@@ -80,4 +81,5 @@ document.querySelector('form').addEventListener('submit', function(event) {
     validateDay()
     validateHour()
     validateAmount(amountInput, alert1)
+    button.classList.add("disabled")
 });

@@ -33,37 +33,8 @@ scaled_data = scaler.transform(df_data)
 # Rajout de la colonne type dans l'array numpy des données scaled
 np_arr_data = np.array([np.insert(scaled_data, 1, json_data['type'])])
 
-# Fonction qui retourne la prediction, la probabilité de non fraude et la probabilité de fraude
-def predict(model, data):
-    # Prediction
-    resultat = model.predict(data)
-    probabilities = model.predict_proba(data)
-    # Pourcentage de non fraude
-    prob_not_fraud = np.round(probabilities[0][0], decimals=2)*100
-    # Pourcentage de non fraude
-    prob_fraud = np.round(probabilities[0][1], decimals=2)*100
-
-    return int(resultat[0]), float(prob_not_fraud), float(prob_fraud)
-
 # Créaction de la liste avec les predictions, probabilité de non fraude et probabilité de fraude de tous les modèles et des predictions seules des modèles de hard voting et de soft voting
-predicts = [list(predict(modele_xgb, np_arr_data)), list(predict(modele_rf, np_arr_data)), list(predict(modele_lgbm, np_arr_data)), int(modele_hard.predict(np_arr_data)[0]), int(modele_soft.predict(np_arr_data)[0])]
-
-# Liste des modèles utilisés
-list_models = ["xgb", "rf", "lgbm", "hard", "soft"]
-
-# Creation du dictionnaire avec les différents modèles associés avec leurs données
-res = {}
-for id, model in enumerate(list_models):
-    res[model] = predicts[id]
-
-pred = []
-for _, val in res.items():
-    try:
-        pred.append(val[0])
-    except:
-        pred.append(val)
-
-res["mode"] = statistics.mode(pred)
+predicts = [int(modele_rf.predict(np_arr_data)[0]), int(modele_xgb.predict(np_arr_data)[0]), int(modele_lgbm.predict(np_arr_data)[0]), int(modele_hard.predict(np_arr_data)[0]), int(modele_soft.predict(np_arr_data)[0])]
 
 # Affichage du dictionnaire mis dans un format JSON valide
-print(json.dumps(res))
+print(json.dumps(statistics.mode(predicts)))

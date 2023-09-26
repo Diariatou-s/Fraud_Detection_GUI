@@ -5,17 +5,18 @@ import numpy as np
 import pandas as pd
 import warnings
 import os
+import statistics
 
 # Ne pas afficher les warnings
 warnings.filterwarnings("ignore")
 
 # Chargement des modèles et du scaler
-modele_xgb = joblib.load(os.path.abspath("models/modele_xgb.pkl"))
-modele_rf = joblib.load(os.path.abspath("models/modele_rf.pkl"))
-modele_lgbm = joblib.load(os.path.abspath("models/modele_lgbm.pkl"))
-modele_hard = joblib.load(os.path.abspath("models/modele_hard.pkl"))
-modele_soft = joblib.load(os.path.abspath("models/modele_soft.pkl"))
-scaler = joblib.load(os.path.abspath("models/scaler.pkl"))
+modele_xgb = joblib.load(os.path.abspath("ml_models/modele_xgb.pkl"))
+modele_rf = joblib.load(os.path.abspath("ml_models/modele_rf.pkl"))
+modele_lgbm = joblib.load(os.path.abspath("ml_models/modele_lgbm.pkl"))
+modele_hard = joblib.load(os.path.abspath("ml_models/modele_hard.pkl"))
+modele_soft = joblib.load(os.path.abspath("ml_models/modele_soft.pkl"))
+scaler = joblib.load(os.path.abspath("ml_models/scaler.pkl"))
 
 # Récupérer le fichier donné comme argument
 file = sys.argv[1]
@@ -43,6 +44,7 @@ predictions = pd.DataFrame({
     'lgbm_proba_fraud': np.round(modele_lgbm.predict_proba(data)[0][1], decimals=2)*100,
     'hard_pred': modele_hard.predict(data),
     'soft_pred': modele_soft.predict(data),
+    'mode': statistics.mode([int(modele_xgb.predict(data)[0]), int(modele_rf.predict(data)[0]), int(modele_lgbm.predict(data)[0]), int(modele_hard.predict(data)[0]), int(modele_soft.predict(data)[0])])
 })
 
 # Fonction pour convertir les données de la colonne step en jour et heure
